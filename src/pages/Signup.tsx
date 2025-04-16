@@ -2,6 +2,9 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/useAuth';
+import { useState } from 'react';
+import { Loader } from 'lucide-react';
+
 
 type FormValues={
     fullname:string,
@@ -13,23 +16,28 @@ type FormValues={
 
 const Signup = () => {
     const navigate=useNavigate();
-
-    const {setUser}=useAuthStore();
+  const [error,setError]=useState<null|string>(null);
+    const {setUser,setLoading,loading}=useAuthStore();
   // console.log(token)
   
     const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
     const onSubmit:SubmitHandler<FormValues>=async(data)=>{
       try {
-        const {data:d}=await axios.post("http://localhost:3000/api/v1/user/signup",{
+        setLoading(true)
+        const {data:d}=await axios.post(`${import.meta.env.VITE_API}/api/v1/user/signup`,{
           email:data.email,
           password:data.password,
           fullname:data.fullname
         },{withCredentials:true});
   setUser(d.access_token,d.userId);
         navigate("/");
-      } catch (error) {
+      } catch (error:any) {
+        setError(error.response.data.msg??"something went wrong");
         console.log(error);
-      }}
+      }finally{
+        setLoading(false);
+      }
+    }
      
   return (
   <div className="bg-black text-white flex min-h-screen flex-col items-center pt-16 sm:justify-center sm:pt-0">
@@ -177,9 +185,11 @@ const Signup = () => {
                 type="submit"
                 className="cursor-pointer font-semibold hover:bg-black hover:text-white hover:ring hover:ring-white transition duration-300 inline-flex items-center justify-center rounded-md text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-white text-black h-10 px-4 py-2"
               >
-                SignUp
+                
+                {loading?<Loader/>:"SignUp"}
               </button>
             </div>
+            {error&&<span className='text-red-500'>{error}</span>}
           </form>
         </div>
       </div>

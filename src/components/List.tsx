@@ -12,7 +12,7 @@ const List = () => {
   
   useEffect(()=>{
 if(token){
-axios.get(`http://localhost:3000/api/v1/user/alldocs?role=${currentRole}`,{headers:{
+axios.get(`${import.meta.env.VITE_API}/api/v1/user/alldocs?role=${currentRole}`,{headers:{
   access_token:token
 }}).then(res=>{
   

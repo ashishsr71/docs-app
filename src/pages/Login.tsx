@@ -1,36 +1,43 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useAuthStore from '../store/useAuth';
+import { Loader } from 'lucide-react';
+import { useState } from 'react';
 
 type FormValues={
   username:string,
   password:string,
 }
-
+type message=any
+type error=null|string;
 
 const Login = () => {
   const navigate=useNavigate();
 
-  const {setUser,setCurrentRole}=useAuthStore();
+  const {setUser,setCurrentRole,setLoading,loading}=useAuthStore();
 // console.log(token)
-
+ const [error,setError]=useState<error>(null);
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
   const onSubmit:SubmitHandler<FormValues>=async(data)=>{
     try {
-      const {data:d}=await axios.post("http://localhost:3000/api/v1/user/login",{
+      setLoading(true)
+      const {data:d}=await axios.post(`${import.meta.env.VITE_API}/api/v1/user/login`,{
         email:data.username,
         password:data.password
       },{withCredentials:true});
 setUser(d.access_token,d.userId);
 setCurrentRole(d.userId);
       navigate("/");
-    } catch (error) {
+    } catch (error:message) {
+      setError(error?error?.response.data.msg:"Invalid")
       console.log(error);
+    }finally{
+setLoading(false)
     }
    
   
-  }
+  };
   return (
     <div className="bg-black text-white flex min-h-screen flex-col items-center pt-16 sm:justify-center sm:pt-0">
       <a href="#">
@@ -131,19 +138,22 @@ setCurrentRole(d.userId);
                 </a>
               </div>
               <div className="mt-4 flex items-center justify-end gap-x-2">
-                <a
+                <Link
                   className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:ring hover:ring-white h-10 px-4 py-2 duration-200"
-                  href="/register"
+                  to="/signup"
                 >
                   Register
-                </a>
+                </Link>
                 <button
+                disabled={loading}
                   type="submit"
                   className="cursor-pointer font-semibold hover:bg-black hover:text-white hover:ring hover:ring-white transition duration-300 inline-flex items-center justify-center rounded-md text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-white text-black h-10 px-4 py-2"
                 >
-                  Log in
+                  {loading?<Loader/>:"Login"}
+                
                 </button>
               </div>
+              {error&&<span className='text-red-500'>{error}</span>}
             </form>
           </div>
         </div>

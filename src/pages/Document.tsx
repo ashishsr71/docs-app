@@ -101,7 +101,7 @@ if(loading){
         return filteredUsers.map((user)=>user.fullname)
       }}
        authEndpoint={async (room) => {
-        const url = `http://localhost:3000/api/v1/liveblocks-auth/${id}`;
+        const url = `${import.meta.env.VITE_API}/api/v1/liveblocks-auth/${id}`;
 
 const response = await axios.post(
   url,

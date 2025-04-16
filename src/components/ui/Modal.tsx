@@ -14,7 +14,7 @@ const Modal: React.FC<ModalProps> = ({ open, setOpen }) => {
     const [name,setName]=useState("");
     const handleCreateOraganization=async()=>{
    if(name.length<3)return;
-      const{data}=  await axios.post("http://localhost:3000/api/v1/org/create-doc",{name},{
+      const{data}=  await axios.post(`${import.meta.env.VITE_API}/api/v1/org/create-doc`,{name},{
           headers:{
             access_token:token
           }
