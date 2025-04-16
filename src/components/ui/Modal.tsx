@@ -17,7 +17,8 @@ const Modal: React.FC<ModalProps> = ({ open, setOpen }) => {
       const{data}=  await axios.post(`${import.meta.env.VITE_API}/api/v1/org/create-doc`,{name},{
           headers:{
             access_token:token
-          }
+          },
+          withCredentials:true
           
         })
         console.log(data);

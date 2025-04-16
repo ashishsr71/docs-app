@@ -14,7 +14,7 @@ const List = () => {
 if(token){
 axios.get(`${import.meta.env.VITE_API}/api/v1/user/alldocs?role=${currentRole}`,{headers:{
   access_token:token
-}}).then(res=>{
+},withCredentials:true}).then(res=>{
   
   setList([...res.data.docs])
 })

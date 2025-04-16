@@ -122,7 +122,7 @@ useEffect(()=>{
 const fetchInvites=async()=>{
   const {data}=await axios.get(`${import.meta.env.VITE_API}/api/v1/org/all-invites`,{headers:{
     access_token:token
-  }});
+  },withCredentials:true});
   console.log(data)
   setInvites(data);
 }
@@ -134,7 +134,7 @@ const joinOrganization=async(id:string|undefined)=>{
   const {data}=await axios.post(`${import.meta.env.VITE_API}/api/v1/org/join`,{orgId:id},{
     headers:{
       access_token:token
-    }
+    },withCredentials:true
   });
   console.log(data);
 }

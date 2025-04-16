@@ -45,7 +45,7 @@ const type=role;
     console.log("content",content)
     const {data}=await axios.post(`${import.meta.env.VITE_API}/api/v1/user/docs`,{docName:title
       ,type,organizationId:currentRole!==userId?currentRole:null,initalContent:content
-    },{headers:{access_token:token}});
+    },{headers:{access_token:token},withCredentials:true});
     console.log(data)
     setOpen(false);
     navigate(`/${data._id}`)
