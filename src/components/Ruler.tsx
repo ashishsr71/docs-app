@@ -148,7 +148,7 @@ interface MarkerProps{
 
 const Marker=({position,
     isLeft,
-    isDragging,
+    
     onMouseDown,
     onDoubleClick
 }:MarkerProps)=>{

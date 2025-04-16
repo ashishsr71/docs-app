@@ -21,7 +21,7 @@ const [isOpen,setIsOpen]=useState(false);
   const toggleDropdown = () => setIsOpen(!isOpen);
  const [open,setModalOpen]=useState(false);
 const [urs,setUsers]=useState<any[]>([]);
-const {token,userId,setCurrentRole,currentRole}=useAuthStore();
+const {token,userId,setCurrentRole,}=useAuthStore();
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [op,setOp]=useState(false);

@@ -1,6 +1,6 @@
 import { ClientSideSuspense, } from "@liveblocks/react";
 import { useSelf ,useOthers} from "@liveblocks/react/suspense";
-import Separator from "./Seperator";
+
 import { Avatar } from "./ui/Avatar";
 
 

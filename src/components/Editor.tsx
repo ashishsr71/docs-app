@@ -20,7 +20,7 @@ import TextAlign from "@tiptap/extension-text-align";
 import { FontSizeExtension } from '../extensions/font-size';
 import {PageBreak} from "../extensions/page-break";
 
-import {Pagination} from 'tiptap-pagination-breaks';
+// import Pagination from 'tiptap-pagination-breaks';
 import Ruler from "./Ruler";
 import { useParams } from "react-router-dom";
 import { useLiveblocksExtension, FloatingToolbar } from "@liveblocks/react-tiptap";
@@ -29,6 +29,8 @@ import "@liveblocks/react-ui/styles.css";
 import "@liveblocks/react-tiptap/styles.css";
 import "../index.css";
 import {  useStorage } from "@liveblocks/react";
+import { Pagination } from "tiptap-pagination-breaks";
+
 
 interface EditorProps{
     initialContent:string|undefined;

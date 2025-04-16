@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 const List = () => {
   const [list,setList]=useState<any[]>([]);
-  const {token,currentRole,setCurrentRole}=useAuthStore();
+  const {token,currentRole}=useAuthStore();
   
   
   useEffect(()=>{
