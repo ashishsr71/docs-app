@@ -43,7 +43,7 @@ const type=role;
     console.log("Title:", title);
     console.log("Type:", type);
     console.log("content",content)
-    const {data}=await axios.post('http://localhost:3000/api/v1/user/docs',{docName:title
+    const {data}=await axios.post(`${import.meta.env.VITE_API}/api/v1/user/docs`,{docName:title
       ,type,organizationId:currentRole!==userId?currentRole:null,initalContent:content
     },{headers:{access_token:token}});
     console.log(data)
