@@ -6,6 +6,8 @@ import * as Menubar from "@radix-ui/react-menubar";
 import { BoldIcon,  FileIcon, FileJsonIcon, FilePenIcon, FilePlusIcon, FileTextIcon, GlobeIcon, ItalicIcon, PrinterIcon, Redo2Icon, RemoveFormattingIcon, Strikethrough, TextIcon, TrashIcon, Underline, Undo2Icon } from 'lucide-react';
 import { BsFilePdf } from 'react-icons/bs';
 import { useEditorStore } from '../store/useEditor';
+import UserStack from './Users';
+import Notification from './ui/Notification';
 
 const Navbar = () => {
 const {editor}=useEditorStore();
@@ -363,7 +365,10 @@ const printEditorContent = () => {
         </div>
      </div>
       </div>
-        
+      <div className='flex'>
+        <UserStack/>
+       <Notification/>
+       </div>
     </nav>
   )
 }

@@ -19,16 +19,28 @@ import Link from "@tiptap/extension-link";
 import TextAlign from "@tiptap/extension-text-align";
 import { FontSizeExtension } from '../extensions/font-size';
 import {PageBreak} from "../extensions/page-break";
-// @ts-ignore
+
 import {Pagination} from 'tiptap-pagination-breaks';
 import Ruler from "./Ruler";
 import { useParams } from "react-router-dom";
+import { useLiveblocksExtension, FloatingToolbar } from "@liveblocks/react-tiptap";
+import { Threads } from "./Threads";
+import "@liveblocks/react-ui/styles.css";
+import "@liveblocks/react-tiptap/styles.css";
+import "../index.css";
+import {  useStorage } from "@liveblocks/react";
+
+interface EditorProps{
+    initialContent:string|undefined;
+}
 
 
-
-
-
-function Editor() {
+function Editor({initialContent}:EditorProps) {
+    const leftMargin=useStorage((root)=>root.leftMargin);
+    const rightMargin=useStorage((root)=>root.rightMargin)
+    const liveblocks = useLiveblocksExtension({
+        initialContent
+    });
 const {id}=useParams();
 
 const {setEditor}=useEditorStore();
@@ -62,11 +74,13 @@ const editor=useEditor({
     },
     editorProps:{
         attributes:{
-            style:"padding-left:56px; padding-right:56px;  ",
+            style:`padding-left:${leftMargin??56}px; padding-right:${rightMargin??56}px;  `,
             class:"focus:outline-none print:border-0 bg-white border border-[#C7C7C7] flex flex-col min-h-[1054px] w-[816px] pt-10 pr-14 pb-10 cursor-text"
         }
     },
-    extensions:[StarterKit,TaskItem.configure({
+    extensions:[StarterKit.configure({
+        history:false
+    }),TaskItem.configure({
         nested:true
     }),TaskList,
 Table.configure({
@@ -100,12 +114,10 @@ Pagination.configure({
     pageHeight: 1056, // default height of the page
     pageWidth: 816,   // default width of the page
     pageMargin: 96,   // default margin of the page
-  })
+  }),
+  liveblocks
 ],
-content:  `
-<p>Try to drag around the image. While you drag, the editor should show a decoration under your cursor. The so called dropcursor.</p>
-
-`,
+immediatelyRender:false,
 })
 
 
@@ -117,6 +129,8 @@ content:  `
         <div  className="min-w-max flex justify-center w-[816px] py-4 print:py-0 mx-auto print:w-full print:min-w-0">
        
         <EditorContent editor={editor} />
+        <Threads editor={editor} />
+        <FloatingToolbar editor={editor} />
         </div>
     </div>
   )

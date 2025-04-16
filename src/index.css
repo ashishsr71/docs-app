@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+
 .tiptap{
   ul,
   ol{
@@ -203,4 +204,39 @@ table .page-break {
   margin-right: -80px; 
  
  /* reduce or set to 0 for no gap */
+}
+
+.floating-threads {
+  display: none;
+ 
+}
+/* .editor {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+} */
+
+/* For desktop */
+.anchored-threads {
+  display: block;
+  max-width: 300px;
+  width: 100%;
+  position: absolute;
+  right: 12px;
+}
+
+@media (max-width: 640px) {
+  .floating-threads {
+    display: block;
+  }
+
+  .anchored-threads {
+    display: none;
+  }
+}
+
+
+div[data-radix-popper-content-wrapper]{
+  z-index: 50 !important;
 }

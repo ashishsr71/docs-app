@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { BsCloudCheck } from 'react-icons/bs';
 
 const DocumentInput = () => {

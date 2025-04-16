@@ -1,7 +1,26 @@
 import { CircleUserIcon } from "lucide-react";
+import useAuthStore from "../store/useAuth";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 
 const List = () => {
+  const [list,setList]=useState<any[]>([]);
+  const {token,currentRole,setCurrentRole}=useAuthStore();
+  
+  
+  useEffect(()=>{
+if(token){
+axios.get(`http://localhost:3000/api/v1/user/alldocs?role=${currentRole}`,{headers:{
+  access_token:token
+}}).then(res=>{
+  
+  setList([...res.data.docs])
+})
+}
+
+  },[token,currentRole])
   return (
     <div className="w-full h-full mt-10 ">
         <div className="mb-10 ">
@@ -15,48 +34,24 @@ const List = () => {
           </tr>
         </thead>
             <tbody >
-                <tr className="bg-card mt-6 rounded">
-                <td className="pl-30 pt-10 w-[80px]">
-                    <div className="flex gap-x-1"><CircleUserIcon/>
-                   <span> hiiiiii</span></div>
+                {list?.length>0&&list.map((item)=>(
+                  <tr  
+                  key={item._id} className="bg-card mt-6 rounded hover:bg-neutral-300 cursor-pointer">
+                <td className="pl-30 pt-5 w-[80px] pb-4">
+                    <Link  to={item._id}><div className="flex flex-wrap gap-x-1 "><CircleUserIcon/>
+                   <span> {item?.title}</span></div></Link>
                     </td>
-                    <td className="pl-30 pt-10 w-[80px]">
+                    <td className="pl-30 pt-5 w-[80px] pb-4">
                     <div className="flex gap-x-1"><CircleUserIcon/>
-                   <span> hiiiiii</span></div>
+                   <span> {item.type?item.type:"Personal"}</span></div>
                     </td>
-                    <td className="pl-30 pt-10 w-[80px]">
+                    <td className="pl-30 pt-5 w-[80px] pb-4">
                     <div className="flex gap-x-1"><CircleUserIcon/>
-                   <span> hiiiiii</span></div>
+                   <span> {item.createdAt}</span></div>
                     </td>
-                </tr>
-                <tr className="bg-card mt-6 rounded">
-                <td className="pl-30 pt-10 w-[80px]">
-                    <div className="flex gap-x-1"><CircleUserIcon/>
-                   <span> hiiiiii</span></div>
-                    </td>
-                    <td className="pl-30 pt-10 w-[80px]">
-                    <div className="flex gap-x-1"><CircleUserIcon/>
-                   <span> hiiiiii</span></div>
-                    </td>
-                    <td className="pl-30 pt-10 w-[80px]">
-                    <div className="flex gap-x-1"><CircleUserIcon/>
-                   <span> hiiiiii</span></div>
-                    </td>
-                </tr>
-                <tr className="bg-card mt-6 rounded">
-                <td className="pl-30 pt-10 w-[80px]">
-                    <div className="flex gap-x-1"><CircleUserIcon/>
-                   <span> hiiiiii</span></div>
-                    </td>
-                    <td className="pl-30 pt-10 w-[80px]">
-                    <div className="flex gap-x-1"><CircleUserIcon/>
-                   <span> hiiiiii</span></div>
-                    </td>
-                    <td className="pl-30 pt-10 w-[80px]">
-                    <div className="flex gap-x-1"><CircleUserIcon/>
-                   <span> hiiiiii</span></div>
-                    </td>
-                </tr>
+                </tr>))}
+                
+               
             </tbody>
             
             </table>

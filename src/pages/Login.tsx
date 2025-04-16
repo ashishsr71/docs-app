@@ -1,6 +1,7 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import useAuthStore from '../store/useAuth';
 
 type FormValues={
   username:string,
@@ -10,13 +11,19 @@ type FormValues={
 
 const Login = () => {
   const navigate=useNavigate();
+
+  const {setUser,setCurrentRole}=useAuthStore();
+// console.log(token)
+
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
   const onSubmit:SubmitHandler<FormValues>=async(data)=>{
     try {
-      const response=await axios.post("http://localhost:3000/api/v1/user/login",{
+      const {data:d}=await axios.post("http://localhost:3000/api/v1/user/login",{
         email:data.username,
         password:data.password
-      });
+      },{withCredentials:true});
+setUser(d.access_token,d.userId);
+setCurrentRole(d.userId);
       navigate("/");
     } catch (error) {
       console.log(error);

@@ -800,8 +800,8 @@ function Toolbar() {
         {
             label:"Comments",
             icon:MessageSquarePlus,
-            onClick:()=>{console.log("todo comment")},
-            isActive:false
+            onClick:()=>{editor?.chain().focus().addPendingComment().run()},
+            isActive:editor?.isActive("liveblocksCommentMark")
         },
         {
           label:"List Todo",
