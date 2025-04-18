@@ -18,7 +18,13 @@ const Login = () => {
   const {setUser,setCurrentRole,setLoading,loading}=useAuthStore();
 // console.log(token)
  const [error,setError]=useState<error>(null);
-  const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
+  const { register, handleSubmit, formState: { errors } } = useForm<FormValues>({
+    defaultValues:{
+      username:"amit@gmail.com",
+      password:"ashish"
+
+    }
+  });
   const onSubmit:SubmitHandler<FormValues>=async(data)=>{
     try {
       setLoading(true)
