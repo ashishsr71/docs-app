@@ -6,7 +6,9 @@ import { Avatar } from './ui/Avatar';
 import a from '../assets/a.png'
 import useAuthStore from '../store/useAuth';
 import axios from 'axios';
-
+import { Button } from '@radix-ui/themes';
+import { Link } from 'react-router-dom';
+// Link
 
 type DropdownProps={
   trigger:string;
@@ -147,6 +149,7 @@ const joinOrganization=async(id:string|undefined)=>{
         </div>
         <div className=''>
         <div className='flex gap-x-2 items-center flex-wrap '>
+         <Link to='/editor'> <Button size={"4"} color={"cyan"} variant={'outline'} className='bg-red-200 cursor-pointer rounded-lg p-1'>White Board</Button></Link>
           <Avatar src={a} notificationList={inivtes} cb={joinOrganization} />
         <DropdownUsers />
         <div

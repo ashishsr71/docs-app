@@ -5,6 +5,7 @@ import Home from "./pages/Home"
 import Login from "./pages/Login"
 import Auth from "./pages/Auth"
 import Signup from "./pages/Signup"
+import ExcalidrawComponent from "./pages/ExcalidrawComponent"
 
 
 
@@ -14,6 +15,7 @@ const router=createBrowserRouter(createRoutesFromElements(<Route >
 <Route path="/:id" element={<Auth><Document/></Auth>}/>
 <Route path="/login" element={<Login/>}/>
 <Route path="/signup" element={<Signup/>}/>
+<Route path="/editor" element={<ExcalidrawComponent/>}/>
 </Route>))
 
   return (
