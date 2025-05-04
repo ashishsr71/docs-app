@@ -7,20 +7,24 @@ import a from '../assets/a.png'
 import useAuthStore from '../store/useAuth';
 import axios from 'axios';
 import { Button } from '@radix-ui/themes';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 // Link
 
 type DropdownProps={
   trigger:string;
   w:string;
+  logout:()=>void
 
 }
 
-const Dropdown = ({trigger,w}:DropdownProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-  // const[content,setContent]=useState<string>("");
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
+
+
+const Dropdown = ({trigger,w,logout}:DropdownProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const dropdownRef = useRef<HTMLDivElement>(null);
+ 
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -59,7 +63,7 @@ const Dropdown = ({trigger,w}:DropdownProps) => {
         </svg>
       </button>
 
-      {isOpen && trigger=="Personal"&& (
+      {/* {isOpen && trigger=="Personal"&& (
         <div className="absolute z-10 mt-2 w-44 bg-white divide-y divide-gray-100 rounded-lg shadow-sm dark:bg-gray-700">
           <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
           
@@ -73,7 +77,7 @@ const Dropdown = ({trigger,w}:DropdownProps) => {
             </li>
           </ul>
         </div>
-      )}
+      )} */}
        {isOpen && trigger=="User"&& (
         <div className="absolute z-10 mt-2 w-44 bg-white divide-y divide-gray-100 rounded-lg shadow-sm dark:bg-gray-700">
           <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
@@ -85,26 +89,11 @@ const Dropdown = ({trigger,w}:DropdownProps) => {
                 Dashboard
               </a>
             </li>
-            <li>
-              <a
-                href="#"
-                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-              >
-                Settings
-              </a>
-            </li>
-            {/* <li>
-              <a
-                href="#"
-                className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-              >
-                Earnings
-              </a>
-            </li> */}
+        
             <li>
               <button
-                onClick={()=>{}}
-                className=" px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                onClick={()=>{logout()}}
+                className=" px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
               >
                 Sign out
               </button>
@@ -118,8 +107,9 @@ const Dropdown = ({trigger,w}:DropdownProps) => {
 
 
 const Navigation = () => {
-  const {token}=useAuthStore();
+  const {token,setUser}=useAuthStore();
   const [inivtes,setInvites]=useState<any[]>([]);
+ const navigate=useNavigate();
 useEffect(()=>{
 const fetchInvites=async()=>{
   const {data}=await axios.get(`${import.meta.env.VITE_API}/api/v1/org/all-invites`,{headers:{
@@ -131,8 +121,11 @@ const fetchInvites=async()=>{
 fetchInvites();
 },[])
 
+
+
+
 const joinOrganization=async(id:string|undefined)=>{
-  console.log(id)
+  // console.log(id)
   const {data}=await axios.post(`${import.meta.env.VITE_API}/api/v1/org/join`,{orgId:id},{
     headers:{
       access_token:token
@@ -140,6 +133,26 @@ const joinOrganization=async(id:string|undefined)=>{
   });
   console.log(data);
 }
+const logout=async()=>{
+  try {
+    // console.log('Logging out...');
+    await axios.post(`${import.meta.env.VITE_API}/api/v1/user/logout`,{},{headers:{access_token:token},
+    withCredentials:true
+    });
+    // console.log('i am fired')
+    // console.log(data)
+
+    setUser(null,null)
+ navigate('/login')
+    
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+
+
 
   return (
     <div className='w-full h-full flex justify-between'>
@@ -155,7 +168,7 @@ const joinOrganization=async(id:string|undefined)=>{
         <div
         className=' rounded-lg pr-3 mr-4 cursor-pointer'
         style={{alignSelf:"center"}}>
-          <Dropdown trigger='User' w='60px'/>
+          <Dropdown trigger='User' w='60px' logout={logout}/>
         </div> 
         </div>
         </div>
